@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "SF Pro Text", Geneva, Tahoma, Arial, Helvetica, sans-serif;
+            font-size: large;
+            text-align: center;
+            background-color: white;
+            color: black;
+        }
+
+        /* Style the header */
+        header {
+            background-color: whitesmoke;
+            padding: 1em;
+            border-radius: 1em;
+            text-align: center;
+            margin: 3em 1em 0;
+        }
+
+        /* Style the top navigation bar */
+        nav {
+            background-color: whitesmoke;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            padding: 0.25em;
+            border-bottom: 1px solid silver;
+        }
+
+        article {
+            padding-top: 2em;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* Clear floats after the columns */
+        section:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Style the footer */
+        footer {
+            background-color: whitesmoke;
+            border-top: 1px solid silver;
+            padding: 1em;
+            text-align: center;
+            font-size: smaller;
+            color: dimgrey;
+        }
+
+        h1 {
+            font-size: large;
+        }
+
+        h2 {
+            font-size: xx-large;
+        }
+
+        input,
+        button {
+            font-size: large;
+        }
+
+        input[type=submit],
+        button[type=button] {
+            background-color: dodgerblue;
+            border: 2px solid dodgerblue;
+            border-radius: 1em;
+            color: white;
+            padding: 0.22em 1em;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition-duration: 0.5s;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover,
+        button[type=button]:hover {
+            border: 2px solid whitesmoke;
+            background-color: whitesmoke;
+            color: dodgerblue;
+        }
+
+        .table div {
+            display: inline-block;
+        }
+
+        .table div div {
+            display: block;
+            text-align: left;
+        }
+
+        .bar {
+            width: 80%;
+            margin-left: 10%;
+            border: 1px solid silver;
+            border-radius: 1em;
+            background-color: silver;
+        }
+
+        .bar div {
+            height: 1em;
+            border-radius: 1em;
+        }
+
+        .barLabelLeft {
+            float: left;
+            margin-left: 10%;
+            font-size: smaller;
+        }
+
+        .barLabelRight {
+            float: right;
+            margin-right: 10%;
+            font-size: smaller;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .on {
+            padding: 1em;
+            border-radius: 1em;
+            color: white;
+            background-color: lime;
+            font-weight: bold;
+        }
+
+        .off {
+            padding: 1em;
+            border-radius: 1em;
+            color: white;
+            background-color: red;
+            font-weight: bold;
+        }
+
+        .label {
+            text-align: left;
+            margin-left: 10%;
+        }
+
+        .label span {
+            font-weight: bolder;
+        }
+
+        .temperature {
+            color: red;
+            stroke: red;
+            fill: none;
+        }
+
+        .bar .temperature {
+            background-color: red;
+        }
+
+        .humidity {
+            color: dodgerblue;
+            stroke: dodgerblue;
+        }
+
+        .bar .humidity {
+            background-color: dodgerblue;
+        }
+
+        @media (max-width: 600px) {
+
+            body,
+            h1,
+            input,
+            button {
+                font-size: medium;
+            }
+
+            h2 {
+                font-size: large;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2 id="title"></h2>
+    </header>
+    <section>
+        <nav id="nav">
+            <button type="button" onclick="document.location = '#status'">Status</button>
+            <button type="button" onclick="document.location = '#settings'">Settings</button>
+        </nav>
+        <article id="status">
+            <h1>Status</h1>
+            <p>Temperature</p>
+            <div class="bar">
+                <div id="temperatureBar" class="temperature"></div>
+            </div>
+            <div class="barLabelLeft">0&deg;C</div>
+            <div class="barLabelRight">50&deg;C</div>
+            <span id="temperature"></span>&deg;C<br />
+            <p>Humidity</p>
+            <div class="bar">
+                <div id="humidityBar" class="humidity"></div>
+            </div>
+            <div class="barLabelLeft">0%</div>
+            <div class="barLabelRight">100%</div>
+            <span id="humidity"></span><br />
+            <p>Time</p>
+            <span id="time"></span>
+            <form name="boost">
+                <p><span>Heating</span> <span>Water</span></p>
+                <span id="heatingOn" class="on">ON</span>
+                <span id="heatingOff" class="off">OFF</span>
+                <span id="waterOn" class="on">ON</span>
+                <span id="waterOff" class="off">OFF</span>
+                <p></p>
+                <button type="submit" id="heatingBoost" name="heatbst" class="off">BOOST</button>
+                <button type="submit" id="waterBoost" name="waterbst" class="off">BOOST</button>
+            </form>
+        </article>
+        <article id="settings">
+            <h1>Settings</h1>
+            <form name="settings">
+                <p>
+                    <label for="setTemperature">Temperature</label><br />
+                    <button type="button" onclick="document.settings.therm.value--; return false;">-</button>
+                    <input type="number" id="setTemperature" name="therm" min="0" max="50" step="1" size="2" value="0" />
+                    <button type="button" onclick="document.settings.therm.value++; return false;">+</button>
+                </p>
+                <p>
+                    <label for="setMode">Mode</label><br />
+                    <input type="radio" id="setMode_off" name="mode" value="0" /><label for="setMode_off">OFF</label>
+                    <input type="radio" id="setMode_auto" name="mode" value="3" /><label for="setMode_auto">AUTO</label>
+                    <input type="radio" id="setMode_allday" name="mode" value="4" /><label for="setMode_allday">ALL DAY</label>
+                </p>
+                <input type="hidden" name="tz" />
+                <input type="hidden" name="time" />
+                <input type="hidden" name="heattmr" />
+                <input type="hidden" name="watertmr" />
+                <p> Heating Timer<br />
+                <div class="table">
+                    <div>
+                        <div><input type="checkbox" id="heat0"><label>00hr</label></div>
+                        <div><input type="checkbox" id="heat1"><label>01hr</label></div>
+                        <div><input type="checkbox" id="heat2"><label>02hr</label></div>
+                        <div><input type="checkbox" id="heat3"><label>03hr</label></div>
+                        <div><input type="checkbox" id="heat4"><label>04hr</label></div>
+                        <div><input type="checkbox" id="heat5"><label>05hr</label></div>
+                    </div>
+                    <div>
+                        <div><input type="checkbox" id="heat6"><label>06hr</label></div>
+                        <div><input type="checkbox" id="heat7"><label>07hr</label></div>
+                        <div><input type="checkbox" id="heat8"><label>08hr</label></div>
+                        <div><input type="checkbox" id="heat9"><label>09hr</label></div>
+                        <div><input type="checkbox" id="heat10"><label>10hr</label></div>
+                        <div><input type="checkbox" id="heat11"><label>11hr</label></div>
+                    </div>
+                    <div>
+                        <div><input type="checkbox" id="heat12"><label>12hr</label></div>
+                        <div><input type="checkbox" id="heat13"><label>13hr</label></div>
+                        <div><input type="checkbox" id="heat14"><label>14hr</label></div>
+                        <div><input type="checkbox" id="heat15"><label>15hr</label></div>
+                        <div><input type="checkbox" id="heat16"><label>16hr</label></div>
+                        <div><input type="checkbox" id="heat17"><label>17hr</label></div>
+                    </div>
+                    <div>
+                        <div><input type="checkbox" id="heat18"><label>18hr</label></div>
+                        <div><input type="checkbox" id="heat19"><label>19hr</label></div>
+                        <div><input type="checkbox" id="heat20"><label>20hr</label></div>
+                        <div><input type="checkbox" id="heat21"><label>21hr</label></div>
+                        <div><input type="checkbox" id="heat22"><label>22hr</label></div>
+                        <div><input type="checkbox" id="heat23"><label>23hr</label></div>
+                    </div>
+                </div>
+                </p>
+                <p> Water Timer<br />
+                <div class="table">
+                    <div>
+                        <div><input type="checkbox" id="water0"><label>00hr</label></div>
+                        <div><input type="checkbox" id="water1"><label>01hr</label></div>
+                        <div><input type="checkbox" id="water2"><label>02hr</label></div>
+                        <div><input type="checkbox" id="water3"><label>03hr</label></div>
+                        <div><input type="checkbox" id="water4"><label>04hr</label></div>
+                        <div><input type="checkbox" id="water5"><label>05hr</label></div>
+                    </div>
+                    <div>
+                        <div><input type="checkbox" id="water6"><label>06hr</label></div>
+                        <div><input type="checkbox" id="water7"><label>07hr</label></div>
+                        <div><input type="checkbox" id="water8"><label>08hr</label></div>
+                        <div><input type="checkbox" id="water9"><label>09hr</label></div>
+                        <div><input type="checkbox" id="water10"><label>10hr</label></div>
+                        <div><input type="checkbox" id="water11"><label>11hr</label></div>
+                    </div>
+                    <div>
+                        <div><input type="checkbox" id="water12"><label>12hr</label></div>
+                        <div><input type="checkbox" id="water13"><label>13hr</label></div>
+                        <div><input type="checkbox" id="water14"><label>14hr</label></div>
+                        <div><input type="checkbox" id="water15"><label>15hr</label></div>
+                        <div><input type="checkbox" id="water16"><label>16hr</label></div>
+                        <div><input type="checkbox" id="water17"><label>17hr</label></div>
+                    </div>
+                    <div>
+                        <div><input type="checkbox" id="water18"><label>18hr</label></div>
+                        <div><input type="checkbox" id="water19"><label>19hr</label></div>
+                        <div><input type="checkbox" id="water20"><label>20hr</label></div>
+                        <div><input type="checkbox" id="water21"><label>21hr</label></div>
+                        <div><input type="checkbox" id="water22"><label>22hr</label></div>
+                        <div><input type="checkbox" id="water23"><label>23hr</label></div>
+                    </div>
+                </div>
+                </p>
+                <P><input type="submit" value="Set" /></P>
+            </form>
+        </article>
+        <article id="setup">
+            <h1>Wi-Fi</h1>
+            <form name="setup">
+                <p>
+                    <label for="setSsid">SSID</label><br />
+                    <input type="text" id="setSsid" name="ssid" maxlength="32" size="16" />
+                </p>
+                <p>
+                    <label for="setPassword">Password</label><br />
+                    <input type="password" id="setPassword" name="pass" maxlength="64" size="16" />
+                </p>
+                <input type="hidden" name="tz" />
+                <input type="hidden" name="time" />
+                <p><input type="submit" value="Set Wifi" /></p>
+            </form>
+        </article>
+    </section>
+    <footer>
+        <p>Simple ioT Thermostat</p>
+    </footer>
+</body>
+<script type="text/javascript">
+    function getJson(url, cbk) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                cbk(data);
+            }
+        };
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
+
+    function putJson(url, data) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", url, true);
+        xhr.send(JSON.stringify(data));
+    }
+
+    getJson("data.ssi", function (data) {
+
+        document.title = data.name;
+        document.getElementById("title").innerHTML = data.name;
+
+        document.getElementById("temperature").innerHTML = data.temp;
+        document.getElementById("temperatureBar").style.width = (data.temp * 2) + "%";
+        document.getElementById("humidity").innerHTML = data.humid;
+        document.getElementById("humidityBar").style.width = data.humid + "%";
+        document.getElementById("time").innerHTML = data.time;
+        document.settings.mode[data.mode].checked = true;
+        document.settings.therm.value = data.therm;
+
+        if (data.heat) {
+            document.getElementById("heatingOn").classList.remove("hide");
+            document.getElementById("heatingOff").classList.add("hide");
+        } else {
+            document.getElementById("heatingOn").classList.add("hide");
+            document.getElementById("heatingOff").classList.remove("hide");
+        }
+
+        if (data.water) {
+            document.getElementById("waterOn").classList.remove("hide");
+            document.getElementById("waterOff").classList.add("hide");
+        } else {
+            document.getElementById("waterOn").classList.add("hide");
+            document.getElementById("waterOff").classList.remove("hide");
+        }
+
+        if (data.heatbst) {
+            document.getElementById("heatBoost").classList.remove("off");
+            document.getElementById("heatBoost").classList.add("on");
+        } else {
+            document.getElementById("heatBoost").classList.add("off");
+            document.getElementById("heatBoost").classList.remove("on");
+        }
+
+        if (data.waterbst) {
+            document.getElementById("waterBoost").classList.remove("hide");
+            document.getElementById("waterBoost").classList.add("hide");
+        } else {
+            document.getElementById("waterBoost").classList.add("hide");
+            document.getElementById("waterBoost").classList.remove("hide");
+        }
+
+        if (data.setup) {
+            document.getElementById("nav").classList.add("hide");
+            document.getElementById("status").classList.add("hide");
+            document.getElementById("settings").classList.add("hide");
+            document.getElementById("setup").classList.remove("hide");
+        } else {
+            document.getElementById("nav").classList.remove("hide");
+            document.getElementById("status").classList.remove("hide");
+            document.getElementById("settings").classList.remove("hide");
+            document.getElementById("setup").classList.add("hide");
+        }
+
+        for (var count = 0; count < 24; count++) {
+            document.getElementById("heat" + count).checked = (((data.heattmr >> count) & 1) != 0);
+            document.getElementById("watr" + count).checked = (((data.watertmr >> count) & 1) != 0);
+        }
+    });
+
+    document.settings.onsubmit = function() {
+        var now = new Date();
+        this.time.value = Math.round(now.getTime() / 1000) - (now.getTimezoneOffset() * 60);
+        this.tz.value = now.getTimezoneOffset();
+
+        for (var count = 0; count < 24; count++) {
+            if (document.getElementById("heat" + count).checked) {
+                this.heattmr.value = Number(this.heattmr.value) | (1 << count);
+            }
+            if (document.getElementById("water" + count).checked) {
+                this.watertmr.value = Number(this.watertmr.value) | (1 << count);
+            }
+        }
+    };
+
+    document.setup.onsubmit = function() {
+        var now = new Date();
+        this.time.value = Math.round(now.getTime() / 1000) - (now.getTimezoneOffset() * 60);
+        this.tz.value = now.getTimezoneOffset();
+    };
+
+</script>
+
+</html>

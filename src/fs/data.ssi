@@ -1,0 +1,16 @@
+{
+    "name": "<!--#name-->",
+    "addr": "<!--#addr-->",
+    "time": "<!--#time-->",
+    "temp": <!--#temp-->,
+    "humid": <!--#humid-->,
+    "heat": <!--#heat-->,
+    "water": <!--#water-->,
+    "setup": <!--#setup-->,
+    "therm": <!--#therm-->,
+    "mode": <!--#mode-->,
+    "heatbst": <!--#heatbst-->,
+    "waterbst": <!--#waterbst-->,
+    "heattmr": <!--#heattmr-->,
+    "watertmr": <!--#watertmr-->
+}

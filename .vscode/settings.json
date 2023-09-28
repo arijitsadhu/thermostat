@@ -1,0 +1,51 @@
+{
+    "cmake.generator": "Unix Makefiles",
+    "cmake.configureArgs": [
+        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DPICO_BOARD=pico_w",
+        "-DWIFI_SSID=VM8341330",
+        "-DWIFI_PASSWORD=qh3Vbpvjyhhx"
+    ],
+    // These settings tweaks to the cmake plugin will ensure
+    // that you debug using cortex-debug instead of trying to launch
+    // a Pico binary on the host
+    "cmake.statusbar.advanced": {
+        "debug": {
+            "visibility": "hidden"
+        },
+        "launch": {
+            "visibility": "hidden"
+        },
+        "build": {
+            "visibility": "hidden"
+        },
+        "buildTarget": {
+            "visibility": "hidden"
+        }
+    },
+    "cmake.buildBeforeRun": true,
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.clang_format_fallbackStyle": "WebKit",
+    "files.associations": {
+        "picow_ntp_client.h": "c",
+        "onboard_temperature.h": "c",
+        "renew_font.h": "c",
+        "uc8151c.h": "c",
+        "type_traits": "c",
+        "typeinfo": "c",
+        "gpio.h": "c",
+        "cstdarg": "c",
+        "*.xbm": "c",
+        "qrcodegen.h": "c",
+        "initializer_list": "c",
+        "lwipopts.h": "c",
+        "limits": "c",
+        "flash.h": "c",
+        "tcp.h": "c",
+        "binary_info.h": "c",
+        "arch_poll.h": "c",
+        "sntp.h": "c"
+    },
+    "cortex-debug.variableUseNaturalFormat": false,
+    "cortex-debug.registerUseNaturalFormat": false
+}
